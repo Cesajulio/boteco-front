@@ -12,6 +12,8 @@ let IN_MEMORY_BARS: Bar[] = [
     averageBeerPrice: 12.0,
     averageDrinkPrice: 20.0,
     averageWaterPrice: 4.5,
+    attractions: ['Música ao Vivo', 'Sinuca'],
+    instagram: '@botecodochopp',
   },
   {
     id: 'bar-cacoal-02',
@@ -22,6 +24,8 @@ let IN_MEMORY_BARS: Bar[] = [
     averageBeerPrice: 10.5,
     averageDrinkPrice: 18.0,
     averageWaterPrice: 4.0,
+    attractions: ['Espetinho', 'Sertanejo'],
+    instagram: '@espetinhouniversitario',
   },
   {
     id: 'bar-cacoal-03',
@@ -32,6 +36,8 @@ let IN_MEMORY_BARS: Bar[] = [
     averageBeerPrice: 13.0,
     averageDrinkPrice: 22.0,
     averageWaterPrice: 5.0,
+    attractions: ['Porções', 'Fliperama'],
+    instagram: '@pontodoguarana',
   },
 ];
 
@@ -59,6 +65,8 @@ export const getNearbyBars = async (lat: number, lng: number, radiusKm: number =
           averageBeerPrice: 14.0,
           averageDrinkPrice: 25.0,
           averageWaterPrice: 6.0,
+          attractions: ['Pagode', 'Chopp Artesanal'],
+          instagram: '@bar_da_orla',
         },
         {
           id: `bar-local-02`,
@@ -69,11 +77,26 @@ export const getNearbyBars = async (lat: number, lng: number, radiusKm: number =
           averageBeerPrice: 11.5,
           averageDrinkPrice: 19.0,
           averageWaterPrice: 4.5,
+          attractions: ['Telão para Jogos', 'Happy Hour'],
+          instagram: '@botecotradicional',
         },
       ];
     }
 
     return [...IN_MEMORY_BARS];
+  }
+};
+
+export const searchBars = async (query: string): Promise<Bar[]> => {
+  try {
+    const response = await api.get<Bar[]>('/bars/search', {
+      params: { q: query },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar bares:", error);
+    // Em caso de erro local (por ex: backend fora), filtramos nos mocks apenas para fallback suave
+    return IN_MEMORY_BARS.filter(b => b.name.toLowerCase().includes(query.toLowerCase()));
   }
 };
 

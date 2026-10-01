@@ -7,6 +7,8 @@ export interface Bar {
   averageBeerPrice: number;
   averageDrinkPrice: number;
   averageWaterPrice: number;
+  attractions?: string[];
+  instagram?: string;
 }
 
 export interface PriceReportInput {
